@@ -47,45 +47,64 @@
 	"use strict";
 	
 	let video = null;
-	let canvas = null;
+	let videoOutput = null;
 	let streaming = false;
 	
+	function addEnergy(spaces, callback) {
+	  const ctx = videoOutput.getContext('2d');
+	
+	  spaces.forEach(space => {
+	    ctx.beginPath();
+	    ctx.strokeStyle = 'green';
+	    ctx.lineWidth = 5;
+	    ctx.moveTo(space, 0);
+	    ctx.lineTo(space, videoOutput.height);
+	    ctx.stroke();
+	    ctx.closePath();
+	  });
+	
+	  if (callback) {
+	    callback();
+	  }
+	}
+	
 	function drawToCanvas() {
-	  const ctx = canvas.getContext('2d');
-	  ctx.clearRect(0, 0, canvas.width, canvas.height);
+	  const ctx = videoOutput.getContext('2d');
+	  ctx.clearRect(0, 0, videoOutput.width, videoOutput.height);
 	  ctx.globalCompositeOperation = 'source-over';
 	
 	  ctx.fillStyle = 'blue';
-	  ctx.fillRect(0, 0, canvas.width, canvas.height);
+	  ctx.fillRect(0, 0, videoOutput.width, videoOutput.height);
 	
-	  ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+	  ctx.drawImage(video, 0, 0, videoOutput.width, videoOutput.height);
 	
 	  const faces = ccv.detect_objects({
-	    canvas: ccv.pre(canvas),
+	    canvas: ccv.pre(videoOutput),
 	    cascade: cascade,
 	    interval: 2,
 	    min_neighbors: 1
 	  });
 	
 	  if (faces.length) {
+	    const spaces = [];
 	    faces.forEach(function (face) {
-	      ctx.strokeStyle = 'red';
-	      ctx.lineWidth = 5;
-	      ctx.beginPath();
-	      ctx.rect(face.x, face.y, face.width, face.height);
-	      ctx.stroke();
-	      ctx.closePath();
+	      spaces.push(face.x + face.width / 2);
+	    });
+	    addEnergy(spaces, () => {
+	      window.requestAnimationFrame(function () {
+	        drawToCanvas();
+	      });
+	    });
+	  } else {
+	    window.requestAnimationFrame(function () {
+	      drawToCanvas();
 	    });
 	  }
-	
-	  window.requestAnimationFrame(function () {
-	    drawToCanvas();
-	  });
 	}
 	
 	window.onload = function () {
 	  video = document.getElementById('video');
-	  canvas = document.getElementById('canvas');
+	  videoOutput = document.getElementById('videoOutput');
 	
 	  navigator.getMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
 	
@@ -114,8 +133,8 @@
 	
 	    video.setAttribute('width', width);
 	    video.setAttribute('height', height);
-	    canvas.setAttribute('width', width);
-	    canvas.setAttribute('height', height);
+	    videoOutput.setAttribute('width', width);
+	    videoOutput.setAttribute('height', height);
 	    streaming = true;
 	
 	    window.requestAnimationFrame(drawToCanvas);
