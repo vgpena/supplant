@@ -50,24 +50,47 @@
 	let videoOutput = null;
 	let streaming = false;
 	let canvas = null;
+	let frames = [];
 	
-	function addEnergy(spaces, callback) {
-	  const ctx = canvas.getContext('2d');
+	function addEnergy(spaces) {
+	  return new Promise((res, rej) => {
+	    const ctx = canvas.getContext('2d');
 	
-	  spaces.forEach(space => {
-	    const newSpace = (videoOutput.width - space) * (canvas.width / videoOutput.width);
-	    ctx.beginPath();
-	    ctx.strokeStyle = 'green';
-	    ctx.lineWidth = 5;
-	    ctx.moveTo(newSpace, 0);
-	    ctx.lineTo(newSpace, canvas.height);
-	    ctx.stroke();
-	    ctx.closePath();
+	    spaces.forEach(space => {
+	      const newSpace = (videoOutput.width - space) * (canvas.width / videoOutput.width);
+	      ctx.beginPath();
+	      ctx.strokeStyle = 'green';
+	      ctx.lineWidth = 5;
+	      ctx.moveTo(newSpace, 0);
+	      ctx.lineTo(newSpace, canvas.height);
+	      ctx.stroke();
+	      ctx.closePath();
+	    });
+	
+	    res();
 	  });
+	}
 	
-	  if (callback) {
-	    callback();
-	  }
+	// throw out any temporarily absent or present faces.
+	// smooth out jumps in face presence.
+	function processSpaces(newFrame) {
+	  return new Promise((res, rej) => {
+	    if (!frames.length) {
+	      frames.push(newFrame);
+	      res(newFrame);
+	    }
+	
+	    if (frames[frames.length - 1].length !== newFrame.length) {
+	      console.log(frames[frames.length - 1].length, newFrame.length);
+	    }
+	
+	    if (frames.length >= 10) {
+	      frames.shift();
+	    }
+	
+	    frames.push(newFrame);
+	    res(newFrame);
+	  });
 	}
 	
 	function drawToCanvas() {
@@ -87,21 +110,18 @@
 	    min_neighbors: 1
 	  });
 	
-	  if (faces.length) {
-	    const spaces = [];
-	    faces.forEach(function (face) {
-	      spaces.push(face.x + face.width / 2);
-	    });
-	    addEnergy(spaces, () => {
-	      window.requestAnimationFrame(function () {
-	        drawToCanvas();
-	      });
-	    });
-	  } else {
+	  const spaces = [];
+	  faces.forEach(function (face) {
+	    spaces.push(face.x + face.width / 2);
+	  });
+	
+	  processSpaces(spaces).then(filteredSpaces => {
+	    return addEnergy(filteredSpaces);
+	  }).then(() => {
 	    window.requestAnimationFrame(function () {
 	      drawToCanvas();
 	    });
-	  }
+	  });
 	}
 	
 	function colorCanvas() {
