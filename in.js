@@ -1,10 +1,13 @@
 "use strict";
 
+import Garden from 'Garden';
+
 let video = null;
 let videoOutput = null;
 let streaming = false;
 let canvas = null;
 let frames = [];
+let garden = null;
 
 function addEnergy(spaces) {
   return new Promise((res, rej) => {
@@ -35,16 +38,15 @@ function processSpaces(newFrame) {
       res(newFrame);
     }
 
-    if (frames[frames.length - 1].length !== newFrame.length) {
-      console.log(frames[frames.length - 1].length, newFrame.length);
-    }
-
     if (frames.length >= 10) {
       frames.shift();
     }
 
-    frames.push(newFrame);
-    res(newFrame);
+    let processedFrame = [];
+    newFrame.forEach((face) => {
+      processedFrame.push((videoOutput.width - newFrame) / videoOutput.width);
+    });
+    res(processedFrame);
   });
 }
 
@@ -69,9 +71,9 @@ function drawToCanvas() {
   faces.forEach(function(face) {
     spaces.push(face.x + (face.width / 2));
   });
-  
+
   processSpaces(spaces).then((filteredSpaces) => {
-    return addEnergy(filteredSpaces);
+    return garden.addEnergy(filteredSpaces);
   }).then(() => {
     window.requestAnimationFrame(function() {
       drawToCanvas();
@@ -79,29 +81,12 @@ function drawToCanvas() {
   });
 }
 
-function colorCanvas() {
-  const ctx = canvas.getContext('2d');
-  ctx.fillStyle = 'aliceblue';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  requestAnimationFrame(() => {
-    colorCanvas();
-  });
-}
-
-function setUpCanvas() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  requestAnimationFrame(() => {
-    colorCanvas();
-  });
-}
-
 window.onload = function() {
   video = document.getElementById('video');
   videoOutput = document.getElementById('videoOutput');
   canvas = document.getElementById('canvas');
-  setUpCanvas();
 
+  garden = new Garden(canvas);
   navigator.getMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
 
   navigator.getMedia({
