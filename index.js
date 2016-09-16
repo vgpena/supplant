@@ -49,16 +49,18 @@
 	let video = null;
 	let videoOutput = null;
 	let streaming = false;
+	let canvas = null;
 	
 	function addEnergy(spaces, callback) {
-	  const ctx = videoOutput.getContext('2d');
+	  const ctx = canvas.getContext('2d');
 	
 	  spaces.forEach(space => {
+	    const newSpace = (videoOutput.width - space) * (canvas.width / videoOutput.width);
 	    ctx.beginPath();
 	    ctx.strokeStyle = 'green';
 	    ctx.lineWidth = 5;
-	    ctx.moveTo(space, 0);
-	    ctx.lineTo(space, videoOutput.height);
+	    ctx.moveTo(newSpace, 0);
+	    ctx.lineTo(newSpace, canvas.height);
 	    ctx.stroke();
 	    ctx.closePath();
 	  });
@@ -102,9 +104,28 @@
 	  }
 	}
 	
+	function colorCanvas() {
+	  const ctx = canvas.getContext('2d');
+	  ctx.fillStyle = 'aliceblue';
+	  ctx.fillRect(0, 0, canvas.width, canvas.height);
+	  requestAnimationFrame(() => {
+	    colorCanvas();
+	  });
+	}
+	
+	function setUpCanvas() {
+	  canvas.width = window.innerWidth;
+	  canvas.height = window.innerHeight;
+	  requestAnimationFrame(() => {
+	    colorCanvas();
+	  });
+	}
+	
 	window.onload = function () {
 	  video = document.getElementById('video');
 	  videoOutput = document.getElementById('videoOutput');
+	  canvas = document.getElementById('canvas');
+	  setUpCanvas();
 	
 	  navigator.getMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
 	

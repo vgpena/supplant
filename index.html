@@ -3,7 +3,10 @@
   <head>
     <title>grew</title>
     <style type="text/css">
-      #video {
+      body {
+        margin: 0;
+      }
+      #video, #videoOutput {
         display: none;
       }
     </style>
@@ -11,6 +14,8 @@
   <body>
     <video id="video"></video>
     <canvas id="videoOutput"></canvas>
+    <canvas id="canvas"></canvas>
+
     <script type="text/javascript" src="ccv.js"></script>
     <script type="text/javascript" src="face.js"></script>
     <script type="text/javascript" src="index.js"></script>
