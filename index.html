@@ -24,12 +24,45 @@
         background-repeat: no-repeat;
         background-position: 0 0;
       }
+      #grass {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 90px;
+        background-image: url('assets/grass2.svg');
+        background-position: bottom left;
+        z-index: 10;
+      }
+      #grass::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 200%;
+        height: 100px;
+        background-image: url('assets/grass3.svg');
+        background-position: bottom left;
+        transform: translateX(-40px) scaleX(-1);
+
+      }
+      #grass::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 200%;
+        height: 100px;
+        background-image: url('assets/grass4.svg');
+        background-position: bottom left;
+        transform: translateX(-70px);
+      }
       #video, #videoOutput, #canvas {
         display: none;
       }
       .sprout {
         position: absolute;
-        bottom: 0;
+        bottom: 60px;
       }
       #green {
         background-image: url('assets/green.svg');
@@ -156,6 +189,7 @@
       <div class="cloud" id="orange"></div>
       <div class="cloud" id="pink"></div>
     </div>
+    <div id="grass"></div>
 
     <script type="text/javascript" src="socket.io.js"></script>
     <script type="text/javascript" src="ccv.js"></script>
