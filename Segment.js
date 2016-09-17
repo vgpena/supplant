@@ -18,6 +18,7 @@ export default class Segment {
   }
 
   increase() {
+    console.log(this.index);
     this.currEnergy = Math.min(energyCeiling, this.currEnergy + this.entropy);
     this.maxEnergy = Math.max(this.currEnergy, this.maxEnergy);
     this.updateEnergy(this.currEnergy);

@@ -19,7 +19,7 @@ io.on('connection', function(socket){
 });
 
 setInterval(function() {
-  io.emit('foundPeople', segments.join(','));
+  io.emit('foundPeople', segments);
 }, 200);
 
 app.get('/update', function (req, res) {
