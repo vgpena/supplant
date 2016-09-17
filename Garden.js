@@ -1,7 +1,7 @@
 "use strict";
 
-const startingEnergy = 10;
-const entropy = 0.5;
+const startingEnergy = 0;
+const entropy = 0.001;
 const totalSegments = 10;
 const totalEnergy = 500;
 
@@ -45,8 +45,8 @@ export default class Garden {
   }
 
   renderSegment(startX, width, segment) {
-    this.ctx.fillText(`+${ segment.posHealth }`, startX + 4, this.height - 20, width);
-    this.ctx.fillText(`-${ segment.negHealth }`, startX + 4, this.height - 8, width);
+    this.ctx.fillText(`+${ segment.currEnergy }`, startX + 4, this.height - 20, width);
+    this.ctx.fillText(`*${ segment.maxEnergy }`, startX + 4, this.height - 8, width);
   }
 
   renderSegments() {
