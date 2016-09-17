@@ -246,8 +246,8 @@
 	  }
 	
 	  renderSegment(startX, width, segment) {
-	    this.ctx.fillText(`+${ segment.posHealth }`, startX + 4, this.height - 20, width);
-	    this.ctx.fillText(`-${ segment.negHealth }`, startX + 4, this.height - 8, width);
+	    this.ctx.fillText(`+${ segment.currEnergy }`, startX + 4, this.height - 20, width);
+	    this.ctx.fillText(`*${ segment.maxEnergy }`, startX + 4, this.height - 8, width);
 	  }
 	
 	  renderSegments() {
@@ -300,20 +300,24 @@
 	  constructor(startingEnergy, entropy, totalSegments) {
 	    this.entropy = entropy;
 	    this.totalSegments = totalSegments;
-	    this.posHealth = startingEnergy;
-	    this.negHealth = 0;
+	    this.currEnergy = startingEnergy;
+	    this.maxEnergy = this.currEnergy;
 	  }
 	
 	  increase() {
-	    this.posHealth += this.entropy;
+	    this.currEnergy += this.entropy;
+	    this.maxEnergy = Math.max(this.currEnergy, this.maxEnergy);
 	  }
 	
 	  decrease() {
 	    let numSegments = arguments.length <= 0 || arguments[0] === undefined ? this.totalSegments - 1 : arguments[0];
 	
-	    const intermediate = Number(this.negHealth) + Number(this.entropy / Number(numSegments)) * (this.totalSegments - numSegments);
+	    this.currEnergy -= Number(this.entropy / Number(numSegments)) * (this.totalSegments - numSegments);
 	
-	    this.negHealth = intermediate.toFixed(1);
+	    if (this.currEnergy < this.entropy) {
+	      this.currEnergy = this.entropy;
+	      this.maxEnergy = this.currEnergy;
+	    }
 	  }
 	}
 	exports.default = Segment;
