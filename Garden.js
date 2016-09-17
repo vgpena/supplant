@@ -3,6 +3,7 @@
 const startingEnergy = 10;
 const entropy = 0.5;
 const totalSegments = 10;
+const totalEnergy = 500;
 
 import Segment from 'Segment';
 
@@ -22,15 +23,6 @@ export default class Garden {
       const active = [];
       data.forEach((datum) => {
         active.push(Math.floor(datum * 10));
-        // const num = Math.floor((this.width / (this.width * datum)) * 100) / totalSegments;
-        // console.log(num);
-        // this.ctx.beginPath();
-        // this.ctx.strokeStyle = 'green';
-        // this.ctx.lineWidth = 5;
-        // this.ctx.moveTo(newSpace, 0);
-        // this.ctx.lineTo(newSpace, this.height);
-        // this.ctx.stroke();
-        // this.ctx.closePath();
       });
       if (active.length) {
         this.histogram.forEach((segment, index) => {
@@ -53,14 +45,15 @@ export default class Garden {
   }
 
   renderSegments() {
-    const width = Math.floor(this.width / this.histogram.length);
+    const width = this.width / this.histogram.length;
     this.histogram.forEach((segment, index) => {
       this.ctx.fillStyle = 'black';
       this.ctx.strokeStyle = 'red';
       this.ctx.lineWidth = 2;
       const startX = index * width;
       this.ctx.strokeRect(startX, this.height - 50, width, 50);
-      this.ctx.fillText(`+${ segment.posHealth }/-${ segment.negHealth }`, startX + 4, this.height - 20, width);
+      this.ctx.fillText(`+${ segment.posHealth }`, startX + 4, this.height - 20, width);
+      this.ctx.fillText(`-${ segment.negHealth }`, startX + 4, this.height - 8, width);
     });
   }
 
