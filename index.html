@@ -11,12 +11,17 @@
         position: relative;
       }
       body {
-        /*background-image: url('assets/blue.svg'),  linear-gradient(rgba(30, 75, 115, 1), rgba(255, 255, 255, 0));*/
+        background-image: linear-gradient(#a2dce9, #e0f3fa);
+        overflow: hidden;
+        cursor: none;
+      }
+      .cloud {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
         background-repeat: no-repeat;
-        background-color: aliceblue;
-        background-image: url('assets/green.svg'), url('assets/blue.svg'), url('assets/purple.svg'), url('assets/yellow.svg'), url('assets/orange.svg'), url('assets/pink.svg'), linear-gradient(#a2dce9, #e0f3fa);
-        background-size: 201px 76.5px, 355.5px 138px, 495px 135px, 429px 103.5px, 615px 202.5px, 762px 264px, 100% 100%;
-        background-position: 200px 300px, 300px 5px, 500px 300px, 600px 220px, 300px 280px, 400px -10px, 0 0;
       }
       #video, #videoOutput, #canvas {
         display: none;
@@ -25,12 +30,147 @@
         position: absolute;
         bottom: 0;
       }
+      #green {
+        background-image: url('assets/green.svg');
+        background-size: 201px 76.5px;
+        transform: translateY(300px);
+        z-index: 5;
+        animation-name: greenAnim;
+        animation-duration: 357s;
+        animation-delay: -100s;
+        animation-direction: normal;
+        animation-iteration-count: infinite;
+        animation-fill-mode: none;
+        animation-play-state: running;
+      }
+      #blue {
+        background-image: url('assets/blue.svg');
+        background-size: 355.5px 138px;
+        transform: translateY(5px);
+        z-index: 4;
+        animation-name: blueAnim;
+        animation-duration: 413s;
+        animation-delay: 200s;
+        animation-direction: normal;
+        animation-iteration-count: infinite;
+        animation-fill-mode: none;
+        animation-play-state: running;
+      }
+      #purple {
+        background-image: url('assets/purple.svg');
+        background-size: 495px 135px;
+        transform: translateY(300px);
+        z-index: 3;
+        animation-name: purpleAnim;
+        animation-duration: 432s;
+        animation-delay: -300s;
+        animation-direction: normal;
+        animation-iteration-count: infinite;
+        animation-fill-mode: none;
+        animation-play-state: running;
+      }
+      #yellow {
+        background-image: url('assets/yellow.svg');
+        background-size: 429px 103.5px;
+        transform: translateY(220px);
+        z-index: 2;
+        animation-name: yellowAnim;
+        animation-duration: 476s;
+        animation-delay: -180s;
+        animation-direction: normal;
+        animation-iteration-count: infinite;
+        animation-fill-mode: none;
+        animation-play-state: running;
+      }
+      #orange {
+        background-image: url('assets/orange.svg');
+        background-size: 615px 202.5px;
+        transform: translateY(280px);
+        z-index: 1;
+        animation-name: orangeAnim;
+        animation-duration: 492s;
+        animation-delay: -50s;
+        animation-direction: normal;
+        animation-iteration-count: infinite;
+        animation-fill-mode: none;
+        animation-play-state: running;
+      }
+      #pink {
+        background-image: url('assets/pink.svg');
+        background-size: 762px 264px;
+        transform: translateY(-10px);
+        z-index: 0;
+        animation-name: pinkAnim;
+        animation-duration: -80s;
+        animation-delay: 0;
+        animation-direction: normal;
+        animation-iteration-count: infinite;
+        animation-fill-mode: none;
+        animation-play-state: running;
+      }
+
+      @keyframes greenAnim {
+        0% {
+          transform: translate(0, 300px);
+        }
+        100% {
+          transform: translate(100%, 300px);
+        }
+      }
+      @keyframes blueAnim {
+        0% {
+          transform: translate(0, 5px);
+        }
+        100% {
+          transform: translate(100%, 5px);
+        }
+      }
+      @keyframes purpleAnim {
+        0% {
+          transform: translate(0, 300px);
+        }
+        100% {
+          transform: translate(100%, 300px);
+        }
+      }
+      @keyframes yellowAnim {
+        0% {
+          transform: translate(0, 220px);
+        }
+        100% {
+          transform: translate(100%, 220px);
+        }
+      }
+      @keyframes orangeAnim {
+        0% {
+          transform: translate(0, 280px);
+        }
+        100% {
+          transform: translate(100%, 280px);
+        }
+      }
+      @keyframes pinkAnim {
+        0% {
+          transform: translate(0, -10px);
+        }
+        100% {
+          transform: translate(100%, -10px);
+        }
+      }
     </style>
   </head>
   <body>
     <video id="video"></video>
     <canvas id="videoOutput"></canvas>
     <canvas id="canvas"></canvas>
+    <div id="clouds">
+      <div class="cloud" id="green"></div>
+      <div class="cloud" id="blue"></div>
+      <div class="cloud" id="purple"></div>
+      <div class="cloud" id="yellow"></div>
+      <div class="cloud" id="orange"></div>
+      <div class="cloud" id="pink"></div>
+    </div>
 
     <script type="text/javascript" src="socket.io.js"></script>
     <script type="text/javascript" src="ccv.js"></script>
