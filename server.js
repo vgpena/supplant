@@ -19,7 +19,7 @@ io.on('connection', function(socket){
 });
 
 setInterval(function() {
-  io.emit('some event', segments.join(','));
+  io.emit('foundPeople', segments.join(','));
 }, 200);
 
 app.get('/update', function (req, res) {
@@ -31,6 +31,6 @@ app.get('/', function (req, res) {
   res.sendFile(__dirname + '/index.html');
 });
 
-app.listen(3000, function () {
+http.listen(3000, function () {
   console.log('Example app listening on port 3000!');
 });
