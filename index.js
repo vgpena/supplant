@@ -104,15 +104,15 @@
 	  });
 	}
 	
-	function drawToCanvas() {
+	function getFaceData() {
 	  const ctx = videoOutput.getContext('2d');
 	  ctx.clearRect(0, 0, videoOutput.width, videoOutput.height);
-	  ctx.globalCompositeOperation = 'source-over';
-	
-	  ctx.fillStyle = 'blue';
+	  // ctx.globalCompositeOperation = 'source-over';
+	  //
+	  // ctx.fillStyle = 'blue';
 	  ctx.fillRect(0, 0, videoOutput.width, videoOutput.height);
-	
-	  ctx.drawImage(video, 0, 0, videoOutput.width, videoOutput.height);
+	  //
+	  // ctx.drawImage(video, 0, 0, videoOutput.width, videoOutput.height);
 	
 	  const faces = ccv.detect_objects({
 	    canvas: ccv.pre(videoOutput),
@@ -130,7 +130,7 @@
 	    return garden.addEnergy(filteredSpaces);
 	  }).then(() => {
 	    window.requestAnimationFrame(function () {
-	      drawToCanvas();
+	      getFaceData();
 	    });
 	  });
 	}
@@ -172,7 +172,7 @@
 	    videoOutput.setAttribute('height', height);
 	    streaming = true;
 	
-	    window.requestAnimationFrame(drawToCanvas);
+	    window.requestAnimationFrame(getFaceData);
 	  }, false);
 	};
 	
@@ -245,30 +245,51 @@
 	    this.ctx.fillRect(0, this.height - 50, this.width, 50);
 	  }
 	
-	  renderSegment(startX, width, segment) {
-	    this.ctx.fillText(`+${ segment.currEnergy }`, startX + 4, this.height - 20, width);
-	    this.ctx.fillText(`*${ segment.maxEnergy }`, startX + 4, this.height - 8, width);
+	  setAttributes(element, attributes, callback) {
+	    for (let key in attributes) {
+	      element.setAttribute(key, attributes[key]);
+	    }
+	
+	    if (callback) {
+	      callback();
+	    }
+	  }
+	
+	  renderSegment(startX, width, segment, index) {
+	    // const height = (width / 326) * 903.1;
+	    // const snap = Snap(width, height);
+	    // snap.attr({
+	    //   'id': `snap-${ index }`,
+	    //   'class': 'snap'
+	    // });
+	    //
+	    // // console.log(snap.node);
+	    // // snap.node.setAttribute("transform", "translate(" + startX + ", " + (window.innerHeight - height) + ")");
+	    //
+	    // Snap.load('flower.svg', (fragment) => {
+	    //   snap.append(fragment);
+	    // });
 	  }
 	
 	  renderSegments() {
 	    const width = this.width / this.histogram.length;
 	    this.histogram.forEach((segment, index) => {
-	      this.ctx.fillStyle = 'black';
-	      this.ctx.strokeStyle = 'red';
-	      this.ctx.lineWidth = 2;
+	      // this.ctx.fillStyle = 'black';
+	      // this.ctx.strokeStyle = 'red';
+	      // this.ctx.lineWidth = 2;
 	      const startX = index * width;
-	      this.ctx.strokeRect(startX, this.height - 50, width, 50);
-	      this.renderSegment(startX, width, segment);
+	      // this.ctx.strokeRect(startX, this.height - 50, width, 50);
+	      this.renderSegment(startX, width, segment, index);
 	    });
 	  }
 	
 	  render() {
-	    this.renderBg();
+	    // this.renderBg();
 	    this.renderSegments();
 	
-	    requestAnimationFrame(() => {
-	      this.render();
-	    });
+	    // requestAnimationFrame(() => {
+	    //   this.render();
+	    // });
 	  }
 	
 	  init() {
@@ -276,7 +297,7 @@
 	    this.canvas.height = this.height;
 	
 	    for (let i = 0; i < totalSegments; i++) {
-	      this.histogram.push(new _Segment2.default(startingEnergy, entropy, totalSegments));
+	      this.histogram.push(new _Segment2.default(startingEnergy, entropy, totalSegments, i));
 	    }
 	
 	    requestAnimationFrame(() => {
@@ -306,12 +327,13 @@
 	const energyCeiling = 1;
 	
 	class Segment {
-	  constructor(startingEnergy, entropy, totalSegments) {
+	  constructor(startingEnergy, entropy, totalSegments, segIndex) {
 	    this.entropy = entropy;
 	    this.totalSegments = totalSegments;
 	    this.currEnergy = startingEnergy;
 	    this.maxEnergy = this.currEnergy;
-	    this.flower = new _Flower2.default(entropy);
+	    this.index = segIndex;
+	    this.flower = new _Flower2.default(entropy, null, window.innerWidth / totalSegments, segIndex);
 	  }
 	
 	  updateEnergy(newEnergy) {
@@ -398,11 +420,15 @@
 	  constructor() {
 	    let minEnergy = arguments.length <= 0 || arguments[0] === undefined ? 0 : arguments[0];
 	    let colors = arguments.length <= 1 || arguments[1] === undefined ? _colors.colorSchemes[Math.floor(Math.random() * _colors.colorSchemes.length)] : arguments[1];
+	    let width = arguments[2];
+	    let segIndex = arguments[3];
 	
 	    this.minEnergy = minEnergy;
 	    this.colors = colors;
 	    this.isHealthy = true;
 	    this.currEnergy = minEnergy;
+	    this.width = width;
+	    this.index = segIndex;
 	
 	    this.init();
 	  }
@@ -440,7 +466,20 @@
 	  }
 	
 	  init() {
-	    // console.log(this.colors);
+	    const height = this.width / 326 * 903.1;
+	    const snap = Snap(this.width, height);
+	    snap.attr({
+	      'id': `snap-${ this.index }`,
+	      'class': 'snap'
+	    });
+	
+	    snap.node.style.left = this.width * this.index;
+	
+	    Snap.load('flower.svg', fragment => {
+	      console.log(fragment);
+	
+	      snap.append(fragment);
+	    });
 	  }
 	}
 	exports.default = Flower;

@@ -44,30 +44,51 @@ export default class Garden {
     this.ctx.fillRect(0, this.height - 50, this.width, 50);
   }
 
-  renderSegment(startX, width, segment) {
-    this.ctx.fillText(`+${ segment.currEnergy }`, startX + 4, this.height - 20, width);
-    this.ctx.fillText(`*${ segment.maxEnergy }`, startX + 4, this.height - 8, width);
+  setAttributes(element, attributes, callback) {
+    for (let key in attributes) {
+      element.setAttribute(key, attributes[key]);
+    }
+
+    if (callback) {
+      callback();
+    }
+  }
+
+  renderSegment(startX, width, segment, index) {
+    // const height = (width / 326) * 903.1;
+    // const snap = Snap(width, height);
+    // snap.attr({
+    //   'id': `snap-${ index }`,
+    //   'class': 'snap'
+    // });
+    //
+    // // console.log(snap.node);
+    // // snap.node.setAttribute("transform", "translate(" + startX + ", " + (window.innerHeight - height) + ")");
+    //
+    // Snap.load('flower.svg', (fragment) => {
+    //   snap.append(fragment);
+    // });
   }
 
   renderSegments() {
     const width = this.width / this.histogram.length;
     this.histogram.forEach((segment, index) => {
-      this.ctx.fillStyle = 'black';
-      this.ctx.strokeStyle = 'red';
-      this.ctx.lineWidth = 2;
+      // this.ctx.fillStyle = 'black';
+      // this.ctx.strokeStyle = 'red';
+      // this.ctx.lineWidth = 2;
       const startX = index * width;
-      this.ctx.strokeRect(startX, this.height - 50, width, 50);
-      this.renderSegment(startX, width, segment);
+      // this.ctx.strokeRect(startX, this.height - 50, width, 50);
+      this.renderSegment(startX, width, segment, index);
     });
   }
 
   render() {
-    this.renderBg();
+    // this.renderBg();
     this.renderSegments();
 
-    requestAnimationFrame(() => {
-      this.render();
-    });
+    // requestAnimationFrame(() => {
+    //   this.render();
+    // });
   }
 
   init() {
@@ -75,7 +96,7 @@ export default class Garden {
     this.canvas.height = this.height;
 
     for (let i = 0; i < totalSegments; i++) {
-      this.histogram.push(new Segment(startingEnergy, entropy, totalSegments));
+      this.histogram.push(new Segment(startingEnergy, entropy, totalSegments, i));
     }
 
     requestAnimationFrame(() => {

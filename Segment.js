@@ -4,12 +4,13 @@ import Flower from 'Flower';
 const energyCeiling = 1;
 
 export default class Segment {
-  constructor(startingEnergy, entropy, totalSegments) {
+  constructor(startingEnergy, entropy, totalSegments, segIndex) {
     this.entropy = entropy;
     this.totalSegments = totalSegments;
     this.currEnergy = startingEnergy;
     this.maxEnergy = this.currEnergy;
-    this.flower = new Flower(entropy);
+    this.index = segIndex;
+    this.flower = new Flower(entropy, null, window.innerWidth / totalSegments, segIndex);
   }
 
   updateEnergy(newEnergy) {

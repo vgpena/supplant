@@ -4,11 +4,13 @@ import { colorSchemes as colorSchemes } from 'colors';
 import { deadColors as deadColors } from 'colors';
 
 export default class Flower {
-  constructor(minEnergy = 0, colors = colorSchemes[Math.floor(Math.random() * colorSchemes.length)]) {
+  constructor(minEnergy = 0, colors = colorSchemes[Math.floor(Math.random() * colorSchemes.length)], width, segIndex) {
     this.minEnergy = minEnergy;
     this.colors = colors;
     this.isHealthy = true;
     this.currEnergy = minEnergy;
+    this.width = width;
+    this.index = segIndex;
 
     this.init();
   }
@@ -22,7 +24,7 @@ export default class Flower {
   }
 
   fadeTo(newEnergy) {
-    
+
   }
 
   growTo(newEnergy) {
@@ -50,6 +52,19 @@ export default class Flower {
   }
 
   init() {
-    // console.log(this.colors);
+    const height = (this.width / 326) * 903.1;
+    const snap = Snap(this.width, height);
+    snap.attr({
+      'id': `snap-${ this.index }`,
+      'class': 'snap'
+    });
+
+    snap.node.style.left = this.width * this.index;
+
+    Snap.load('flower.svg', (fragment) => {
+      console.log(fragment);
+
+      snap.append(fragment);
+    });
   }
 }

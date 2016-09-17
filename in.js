@@ -55,15 +55,15 @@ function processSpaces(newFrame) {
   });
 }
 
-function drawToCanvas() {
+function getFaceData() {
   const ctx = videoOutput.getContext('2d');
   ctx.clearRect(0, 0, videoOutput.width, videoOutput.height);
-  ctx.globalCompositeOperation = 'source-over';
-
-  ctx.fillStyle = 'blue';
+  // ctx.globalCompositeOperation = 'source-over';
+  //
+  // ctx.fillStyle = 'blue';
   ctx.fillRect(0, 0, videoOutput.width, videoOutput.height);
-
-  ctx.drawImage(video, 0, 0, videoOutput.width, videoOutput.height);
+  //
+  // ctx.drawImage(video, 0, 0, videoOutput.width, videoOutput.height);
 
   const faces = ccv.detect_objects({
     canvas: ccv.pre(videoOutput),
@@ -81,7 +81,7 @@ function drawToCanvas() {
     return garden.addEnergy(filteredSpaces);
   }).then(() => {
     window.requestAnimationFrame(function() {
-      drawToCanvas();
+      getFaceData();
     });
   });
 }
@@ -123,7 +123,7 @@ window.onload = function() {
     videoOutput.setAttribute('height', height);
     streaming = true;
 
-    window.requestAnimationFrame(drawToCanvas);
+    window.requestAnimationFrame(getFaceData);
   }, false);
 }
 
