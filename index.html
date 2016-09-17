@@ -18,6 +18,55 @@
         position: absolute;
         bottom: 0;
       }
+      .crownClass {
+        position: absolute;
+        opacity: 0;
+      }
+      .crownClass.animate {
+        animation: 5s ease 0s crownAnimation;
+      }
+
+      @keyframes crownAnimation {
+        0% {
+          transform: translate(0px, 0px);
+          opacity: 0;
+        }
+        20% { 
+          opacity: 1;
+        }
+        60% { 
+          opacity: 1;
+        }
+        100% {
+          transform: translate(0px, -100px);
+          opacity: 0;
+        }
+      }
+
+      .skullClass {
+        position: absolute;
+        opacity: 0;
+      }
+      .skullClass.animate {
+        animation: 5s ease 0s crownAnimation;
+      }
+
+      @keyframes skullAnimation {
+        0% {
+          transform: translate(0px, 0px);
+          opacity: 0;
+        }
+        20% { 
+          opacity: 1;
+        }
+        60% { 
+          opacity: 1;
+        }
+        100% {
+          transform: translate(0px, -100px);
+          opacity: 0;
+        }
+      }
     </style>
   </head>
   <body>
