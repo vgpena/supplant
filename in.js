@@ -97,6 +97,14 @@ function foundPeople(data) {
     }
   });
 
+  // console.log(mouseSegments);
+
+  // active.concat(mouseSegments);
+  // console.log(active);
+  mouseSegments.forEach((curr) => {
+    active.push(curr);
+  });
+
   garden.addEnergy(active);
   // processSpaces(data).then((filteredSpaces) => {
   //   return garden.addEnergy(filteredSpaces);
@@ -156,7 +164,7 @@ window.onload = function() {
 
 window.addEventListener('mousedown', (event) => {
   const x = event.clientX;
-  let seg = Math.floor((x / canvas.width) * 10);
+  let seg = Math.floor((x / window.innerWidth) * 10);
   let index = mouseSegments.indexOf(seg);
   if (index !== -1) {
     mouseSegments.splice(index, 1);
