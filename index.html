@@ -22,6 +22,7 @@
         width: 100%;
         height: 100%;
         background-repeat: no-repeat;
+        background-position: 0 0;
       }
       #video, #videoOutput, #canvas {
         display: none;
@@ -33,62 +34,49 @@
       #green {
         background-image: url('assets/green.svg');
         background-size: 201px 76.5px;
-        transform: translateY(300px);
         z-index: 5;
         animation-name: greenAnim;
-        animation-duration: 357s;
+        animation-duration: 702s;
         animation-delay: -100s;
         animation-direction: normal;
         animation-iteration-count: infinite;
-        animation-fill-mode: none;
-        animation-play-state: running;
       }
       #blue {
         background-image: url('assets/blue.svg');
         background-size: 355.5px 138px;
-        transform: translateY(5px);
         z-index: 4;
         animation-name: blueAnim;
-        animation-duration: 413s;
+        animation-duration: 826s;
         animation-delay: -10s;
         animation-direction: normal;
         animation-iteration-count: infinite;
-        animation-fill-mode: none;
-        animation-play-state: running;
       }
       #purple {
         background-image: url('assets/purple.svg');
         background-size: 495px 135px;
-        transform: translateY(300px);
         z-index: 3;
         animation-name: purpleAnim;
-        animation-duration: 432s;
-        animation-delay: -300s;
+        animation-duration: 864s;
+        animation-delay: -400s;
         animation-direction: normal;
         animation-iteration-count: infinite;
-        animation-fill-mode: none;
-        animation-play-state: running;
       }
       #yellow {
         background-image: url('assets/yellow.svg');
         background-size: 429px 103.5px;
-        transform: translateY(220px);
         z-index: 2;
         animation-name: yellowAnim;
-        animation-duration: 476s;
+        animation-duration: 902s;
         animation-delay: -180s;
         animation-direction: normal;
         animation-iteration-count: infinite;
-        animation-fill-mode: none;
-        animation-play-state: running;
       }
       #orange {
         background-image: url('assets/orange.svg');
         background-size: 615px 202.5px;
-        transform: translateY(280px);
         z-index: 1;
         animation-name: orangeAnim;
-        animation-duration: 492s;
+        animation-duration: 933;
         animation-delay: -50s;
         animation-direction: normal;
         animation-iteration-count: infinite;
@@ -98,20 +86,17 @@
       #pink {
         background-image: url('assets/pink.svg');
         background-size: 762px 264px;
-        transform: translateY(-10px);
         z-index: 0;
         animation-name: pinkAnim;
-        animation-duration: 610s;
+        animation-duration: 1220s;
         animation-delay: -80s;
         animation-direction: normal;
         animation-iteration-count: infinite;
-        animation-fill-mode: none;
-        animation-play-state: running;
       }
 
       @keyframes greenAnim {
         0% {
-          transform: translate(0, 300px);
+          transform: translate(-100%, 300px);
         }
         100% {
           transform: translate(100%, 300px);
@@ -119,7 +104,7 @@
       }
       @keyframes blueAnim {
         0% {
-          transform: translate(0, 5px);
+          transform: translate(-100%, 5px);
         }
         100% {
           transform: translate(100%, 5px);
@@ -127,7 +112,7 @@
       }
       @keyframes purpleAnim {
         0% {
-          transform: translate(0, 300px);
+          transform: translate(-100%, 300px);
         }
         100% {
           transform: translate(100%, 300px);
@@ -135,7 +120,7 @@
       }
       @keyframes yellowAnim {
         0% {
-          transform: translate(0, 220px);
+          transform: translate(-100%, 220px);
         }
         100% {
           transform: translate(100%, 220px);
@@ -143,7 +128,7 @@
       }
       @keyframes orangeAnim {
         0% {
-          transform: translate(0, 280px);
+          transform: translate(-100%, 280px);
         }
         100% {
           transform: translate(100%, 280px);
@@ -151,7 +136,7 @@
       }
       @keyframes pinkAnim {
         0% {
-          transform: translate(0, -10px);
+          transform: translate(-100%, -10px);
         }
         100% {
           transform: translate(100%, -10px);
