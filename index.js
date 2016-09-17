@@ -240,11 +240,12 @@
 	  renderSegments() {
 	    const width = Math.floor(this.width / this.histogram.length);
 	    this.histogram.forEach((segment, index) => {
-	      this.ctx.fillStyle = 'transparent';
+	      this.ctx.fillStyle = 'black';
 	      this.ctx.strokeStyle = 'red';
 	      this.ctx.lineWidth = 2;
 	      const startX = index * width;
 	      this.ctx.strokeRect(startX, this.height - 50, width, 50);
+	      this.ctx.fillText(`+${ segment.posHealth }/-${ segment.negHealth }`, startX + 4, this.height - 20, width);
 	    });
 	  }
 	
@@ -297,7 +298,8 @@
 	  decrease() {
 	    let numSegments = arguments.length <= 0 || arguments[0] === undefined ? this.totalSegments - 1 : arguments[0];
 	
-	    this.negHealth += this.entropy / numSegments;
+	    const intermediate = Number(this.negHealth) + Number(this.entropy / Number(numSegments));
+	    this.negHealth = intermediate.toFixed(1);
 	  }
 	}
 	exports.default = Segment;

@@ -13,6 +13,7 @@ export default class Segment {
   }
 
   decrease(numSegments = this.totalSegments - 1) {
-    this.negHealth += (this.entropy / numSegments);
+    const intermediate = Number(this.negHealth) + Number(this.entropy / Number(numSegments));
+    this.negHealth = intermediate.toFixed(1);
   }
 }
