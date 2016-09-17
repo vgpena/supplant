@@ -6,10 +6,17 @@
       body, html {
         margin: 0;
         position: relative;
-        background-color: aliceblue;
         height: 100%;
         min-height: 100%;
         position: relative;
+      }
+      body {
+        /*background-image: url('assets/blue.svg'),  linear-gradient(rgba(30, 75, 115, 1), rgba(255, 255, 255, 0));*/
+        background-repeat: no-repeat;
+        background-color: aliceblue;
+        background-image: url('assets/green.svg'), url('assets/blue.svg'), url('assets/purple.svg'), url('assets/yellow.svg'), url('assets/orange.svg'), url('assets/pink.svg'), linear-gradient(#a2dce9, #e0f3fa);
+        background-size: 201px 76.5px, 355.5px 138px, 495px 135px, 429px 103.5px, 615px 202.5px, 762px 264px, 100% 100%;
+        background-position: 200px 300px, 300px 5px, 500px 300px, 600px 220px, 300px 280px, 400px -10px, 0 0;
       }
       #video, #videoOutput, #canvas {
         display: none;
