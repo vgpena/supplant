@@ -60,6 +60,7 @@
 	let garden = null;
 	let mouseSegments = [];
 	let socket = null;
+	let active = [];
 	
 	// function addEnergy(spaces) {
 	//   return new Promise((res, rej) => {
@@ -140,17 +141,21 @@
 	
 	function foundPeople(data) {
 	  // console.log(data);
-	  const active = [];
+	  active = [];
 	  data.forEach((curr, index) => {
 	    if (Number(curr) === 1) {
 	      active.push(index);
 	    }
 	  });
 	
-	  garden.addEnergy(active);
 	  // processSpaces(data).then((filteredSpaces) => {
 	  //   return garden.addEnergy(filteredSpaces);
 	  // });
+	}
+	
+	function draw() {
+	  garden.addEnergy(active);
+	  window.requestAnimationFrame(draw);
 	}
 	
 	function addSocketEvents() {
@@ -202,6 +207,7 @@
 	  //
 	  //   window.requestAnimationFrame(getFaceData);
 	  // }, false);
+	  draw();
 	};
 	
 	window.addEventListener('mousedown', event => {
@@ -232,7 +238,7 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	const startingEnergy = 0;
-	const entropy = 0.1;
+	const entropy = 0.001;
 	const totalSegments = 10;
 	const totalEnergy = 500;
 	
@@ -370,7 +376,6 @@
 	  }
 	
 	  increase() {
-	    console.log(this.index);
 	    this.currEnergy = Math.min(energyCeiling, this.currEnergy + this.entropy);
 	    this.maxEnergy = Math.max(this.currEnergy, this.maxEnergy);
 	    this.updateEnergy(this.currEnergy);
@@ -571,6 +576,11 @@
 	
 	    Snap.load('flower.svg', fragment => {
 	      this.sprout.append(fragment);
+	
+	      fragment.selectAll('.st0').attr({ fill: this.colors.stem });
+	      fragment.selectAll('.st1').attr({ fill: this.colors.main });
+	      fragment.selectAll('.st2').attr({ fill: this.colors.center });
+	      fragment.selectAll('.st3').attr({ fill: this.colors.lines });
 	
 	      for (let i in this.timings) {
 	        i = parseInt(i);
