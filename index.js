@@ -420,7 +420,7 @@
 	class Flower {
 	  constructor() {
 	    let minEnergy = arguments.length <= 0 || arguments[0] === undefined ? 0 : arguments[0];
-	    let colors = arguments.length <= 1 || arguments[1] === undefined ? _colors.colorSchemes[Math.floor(Math.random() * _colors.colorSchemes.length)] : arguments[1];
+	    let colors = arguments[1];
 	    let width = arguments[2];
 	    let segIndex = arguments[3];
 	
@@ -503,8 +503,31 @@
 	    timing.last = scale;
 	  }
 	
+	  randomizeChannel(val) {
+	    const range = 50;
+	    const modifier = Math.floor(Math.random() * range * 2) - range;
+	    const newVal = Number(val) + Number(modifier);
+	    return Math.min(Math.max(newVal, 0), 255);
+	  }
+	
+	  randomizeColor(rgbColor) {
+	    const r = rgbColor.split('(')[1].split(',')[0];
+	    const g = rgbColor.split(`${ r },`)[1].split(',')[0];
+	    const b = rgbColor.split(`${ g },`)[1].split(')')[0];
+	
+	    return `rgb(${ this.randomizeChannel(r) },${ this.randomizeChannel(g) },${ this.randomizeChannel(b) })`;
+	  }
+	
+	  randomizeColors(scheme) {
+	    let newScheme = {};
+	    for (let color in scheme) {
+	      newScheme[color] = this.randomizeColor(scheme[color]);
+	    }
+	    return newScheme;
+	  }
+	
 	  pickNewColors() {
-	    this.colors = _colors.colorSchemes[Math.floor(Math.random() * _colors.colorSchemes.length)];
+	    this.colors = this.randomizeColors(_colors.colorSchemes[Math.floor(Math.random() * _colors.colorSchemes.length)]);
 	  }
 	
 	  die() {
@@ -553,9 +576,9 @@
 	    } else {
 	      this.tweenToEnergy(newEnergy, maxEnergy);
 	    }
-	    if (this.index === 0) {
-	      console.log(newEnergy, maxEnergy);
-	    }
+	    // if (this.index === 0) {
+	    //   console.log(newEnergy, maxEnergy);
+	    // }
 	    this.sprout.attr({
 	      opacity: newEnergy / maxEnergy
 	    });
@@ -577,6 +600,7 @@
 	  }
 	
 	  init() {
+	    this.pickNewColors();
 	    const height = this.width / 326 * 903.1;
 	    this.sprout = Snap(this.width, height);
 	    this.sprout.attr({

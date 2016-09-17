@@ -4,7 +4,7 @@ import { colorSchemes as colorSchemes } from 'colors';
 import { deadColors as deadColors } from 'colors';
 
 export default class Flower {
-  constructor(minEnergy = 0, colors = colorSchemes[Math.floor(Math.random() * colorSchemes.length)], width, segIndex) {
+  constructor(minEnergy = 0, colors, width, segIndex) {
     this.minEnergy = minEnergy;
     this.colors = colors;
     this.isHealthy = true;
@@ -92,8 +92,31 @@ export default class Flower {
     timing.last = scale;
   }
 
+  randomizeChannel(val) {
+    const range = 50;
+    const modifier = Math.floor(Math.random() * range * 2) - range;
+    const newVal = Number(val) + Number(modifier);
+    return Math.min(Math.max(newVal, 0), 255);
+  }
+
+  randomizeColor(rgbColor) {
+    const r = rgbColor.split('(')[1].split(',')[0];
+    const g = rgbColor.split(`${ r },`)[1].split(',')[0];
+    const b = rgbColor.split(`${ g },`)[1].split(')')[0];
+
+    return `rgb(${ this.randomizeChannel(r) },${ this.randomizeChannel(g) },${ this.randomizeChannel(b) })`;
+  }
+
+  randomizeColors(scheme) {
+    let newScheme = {};
+    for (let color in scheme) {
+      newScheme[color] = this.randomizeColor(scheme[color]);
+    }
+    return newScheme;
+  }
+
   pickNewColors() {
-    this.colors = colorSchemes[Math.floor(Math.random() * colorSchemes.length)];
+    this.colors = this.randomizeColors(colorSchemes[Math.floor(Math.random() * colorSchemes.length)]);
   }
 
   die() {
@@ -105,7 +128,7 @@ export default class Flower {
   }
 
   fadeTo(newEnergy, maxEnergy) {
-    
+
   }
 
   growTo(newEnergy) {
@@ -144,9 +167,9 @@ export default class Flower {
     } else {
       this.tweenToEnergy(newEnergy, maxEnergy);
     }
-    if (this.index === 0) {
-      console.log(newEnergy, maxEnergy);
-    }
+    // if (this.index === 0) {
+    //   console.log(newEnergy, maxEnergy);
+    // }
     this.sprout.attr({
       opacity: newEnergy / maxEnergy
     })
@@ -168,6 +191,7 @@ export default class Flower {
   }
 
   init() {
+    this.pickNewColors();
     const height = (this.width / 326) * 903.1;
     this.sprout = Snap(this.width, height);
     this.sprout.attr({
