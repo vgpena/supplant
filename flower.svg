@@ -1,12 +1,5 @@
 <svg version="1.1" class="flowersvg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 viewBox="0 0 326 903.1" style="enable-background:new 0 0 326 903.1;" xml:space="preserve">
-	<style type="text/css">
-		.st0{fill:#80C343;}
-		.st1{fill:#C79DC9;}
-		.st2{fill:#FDE885;}
-		.st3{fill:#97204B;}
-		.st4{fill:#ff0000;}
-	</style>
 	<polygon id="stem" class="st0" points="168.3,156.2 149.2,903.1 168.3,903.1 187.4,903.1"/>
 	<g id="leaves">
     <polygon id="leaf1" class="st0" points="39.2,785.4 26.3,768 70,726.1 109.2,755.8 109.9,755.9 171.3,801.9 52,851 21.9,798.5"/>

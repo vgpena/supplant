@@ -10,7 +10,7 @@ export default class Segment {
     this.currEnergy = startingEnergy;
     this.maxEnergy = this.currEnergy;
     this.index = segIndex;
-    this.flower = new Flower(entropy, null, window.innerWidth / totalSegments, segIndex);
+    this.flower = new Flower(entropy, undefined, window.innerWidth / totalSegments, segIndex);
   }
 
   updateEnergy(newEnergy) {

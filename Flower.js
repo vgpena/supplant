@@ -62,7 +62,10 @@ export default class Flower {
     snap.node.style.left = this.width * this.index;
 
     Snap.load('flower.svg', (fragment) => {
-      console.log(fragment);
+      fragment.selectAll('.st0').attr({ fill: this.colors.stem });
+      fragment.selectAll('.st1').attr({ fill: this.colors.main });
+      fragment.selectAll('.st2').attr({ fill: this.colors.center });
+      fragment.selectAll('.st3').attr({ fill: this.colors.lines });
 
       snap.append(fragment);
     });

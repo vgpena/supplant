@@ -333,7 +333,7 @@
 	    this.currEnergy = startingEnergy;
 	    this.maxEnergy = this.currEnergy;
 	    this.index = segIndex;
-	    this.flower = new _Flower2.default(entropy, null, window.innerWidth / totalSegments, segIndex);
+	    this.flower = new _Flower2.default(entropy, undefined, window.innerWidth / totalSegments, segIndex);
 	  }
 	
 	  updateEnergy(newEnergy) {
@@ -476,7 +476,10 @@
 	    snap.node.style.left = this.width * this.index;
 	
 	    Snap.load('flower.svg', fragment => {
-	      console.log(fragment);
+	      fragment.selectAll('.st0').attr({ fill: this.colors.stem });
+	      fragment.selectAll('.st1').attr({ fill: this.colors.main });
+	      fragment.selectAll('.st2').attr({ fill: this.colors.center });
+	      fragment.selectAll('.st3').attr({ fill: this.colors.lines });
 	
 	      snap.append(fragment);
 	    });
