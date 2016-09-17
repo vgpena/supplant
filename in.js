@@ -8,6 +8,7 @@ let streaming = false;
 let canvas = null;
 let frames = [];
 let garden = null;
+let mouseSegments = [];
 
 function addEnergy(spaces) {
   return new Promise((res, rej) => {
@@ -42,10 +43,14 @@ function processSpaces(newFrame) {
       frames.shift();
     }
 
-    let processedFrame = [];
+    let processedFrame = [].concat(mouseSegments);
+
     newFrame.forEach((face) => {
-      processedFrame.push((videoOutput.width - newFrame) / videoOutput.width);
+      processedFrame.push(Math.floor((videoOutput.width - newFrame) * 10 / videoOutput.width));
     });
+
+    console.log(processedFrame);
+
     res(processedFrame);
   });
 }
@@ -120,5 +125,15 @@ window.onload = function() {
 
     window.requestAnimationFrame(drawToCanvas);
   }, false);
-
 }
+
+window.addEventListener('mousedown', (event) => {
+  const x = event.clientX;
+  let seg = Math.floor((x / canvas.width) * 10);
+  let index = mouseSegments.indexOf(seg);
+  if (index !== -1) {
+    mouseSegments.splice(index, 1);
+  } else {
+    mouseSegments.push(seg);
+  }
+});

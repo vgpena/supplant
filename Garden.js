@@ -22,7 +22,7 @@ export default class Garden {
     return new Promise((res, rej) => {
       const active = [];
       data.forEach((datum) => {
-        active.push(Math.floor(datum * 10));
+        active.push(datum);
       });
       if (active.length) {
         this.histogram.forEach((segment, index) => {
@@ -44,6 +44,11 @@ export default class Garden {
     this.ctx.fillRect(0, this.height - 50, this.width, 50);
   }
 
+  renderSegment(startX, width, segment) {
+    this.ctx.fillText(`+${ segment.posHealth }`, startX + 4, this.height - 20, width);
+    this.ctx.fillText(`-${ segment.negHealth }`, startX + 4, this.height - 8, width);
+  }
+
   renderSegments() {
     const width = this.width / this.histogram.length;
     this.histogram.forEach((segment, index) => {
@@ -52,8 +57,7 @@ export default class Garden {
       this.ctx.lineWidth = 2;
       const startX = index * width;
       this.ctx.strokeRect(startX, this.height - 50, width, 50);
-      this.ctx.fillText(`+${ segment.posHealth }`, startX + 4, this.height - 20, width);
-      this.ctx.fillText(`-${ segment.negHealth }`, startX + 4, this.height - 8, width);
+      this.renderSegment(startX, width, segment);
     });
   }
 

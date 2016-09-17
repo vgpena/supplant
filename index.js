@@ -58,6 +58,7 @@
 	let canvas = null;
 	let frames = [];
 	let garden = null;
+	let mouseSegments = [];
 	
 	function addEnergy(spaces) {
 	  return new Promise((res, rej) => {
@@ -91,10 +92,14 @@
 	      frames.shift();
 	    }
 	
-	    let processedFrame = [];
+	    let processedFrame = [].concat(mouseSegments);
+	
 	    newFrame.forEach(face => {
-	      processedFrame.push((videoOutput.width - newFrame) / videoOutput.width);
+	      processedFrame.push(Math.floor((videoOutput.width - newFrame) * 10 / videoOutput.width));
 	    });
+	
+	    console.log(processedFrame);
+	
 	    res(processedFrame);
 	  });
 	}
@@ -170,6 +175,17 @@
 	    window.requestAnimationFrame(drawToCanvas);
 	  }, false);
 	};
+	
+	window.addEventListener('mousedown', event => {
+	  const x = event.clientX;
+	  let seg = Math.floor(x / canvas.width * 10);
+	  let index = mouseSegments.indexOf(seg);
+	  if (index !== -1) {
+	    mouseSegments.splice(index, 1);
+	  } else {
+	    mouseSegments.push(seg);
+	  }
+	});
 
 /***/ },
 /* 1 */
@@ -207,7 +223,7 @@
 	    return new Promise((res, rej) => {
 	      const active = [];
 	      data.forEach(datum => {
-	        active.push(Math.floor(datum * 10));
+	        active.push(datum);
 	      });
 	      if (active.length) {
 	        this.histogram.forEach((segment, index) => {
@@ -229,6 +245,11 @@
 	    this.ctx.fillRect(0, this.height - 50, this.width, 50);
 	  }
 	
+	  renderSegment(startX, width, segment) {
+	    this.ctx.fillText(`+${ segment.posHealth }`, startX + 4, this.height - 20, width);
+	    this.ctx.fillText(`-${ segment.negHealth }`, startX + 4, this.height - 8, width);
+	  }
+	
 	  renderSegments() {
 	    const width = this.width / this.histogram.length;
 	    this.histogram.forEach((segment, index) => {
@@ -237,8 +258,7 @@
 	      this.ctx.lineWidth = 2;
 	      const startX = index * width;
 	      this.ctx.strokeRect(startX, this.height - 50, width, 50);
-	      this.ctx.fillText(`+${ segment.posHealth }`, startX + 4, this.height - 20, width);
-	      this.ctx.fillText(`-${ segment.negHealth }`, startX + 4, this.height - 8, width);
+	      this.renderSegment(startX, width, segment);
 	    });
 	  }
 	
@@ -291,7 +311,8 @@
 	  decrease() {
 	    let numSegments = arguments.length <= 0 || arguments[0] === undefined ? this.totalSegments - 1 : arguments[0];
 	
-	    const intermediate = Number(this.negHealth) + Number(this.entropy / Number(numSegments));
+	    const intermediate = Number(this.negHealth) + Number(this.entropy / Number(numSegments)) * (this.totalSegments - numSegments);
+	
 	    this.negHealth = intermediate.toFixed(1);
 	  }
 	}
