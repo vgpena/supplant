@@ -98,7 +98,7 @@
 	      processedFrame.push(Math.floor((videoOutput.width - newFrame) * 10 / videoOutput.width));
 	    });
 	
-	    console.log(processedFrame);
+	    // console.log(processedFrame);
 	
 	    res(processedFrame);
 	  });
@@ -203,8 +203,8 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	const startingEnergy = 10;
-	const entropy = 0.5;
+	const startingEnergy = 0;
+	const entropy = 0.001;
 	const totalSegments = 10;
 	const totalEnergy = 500;
 	
@@ -289,24 +289,39 @@
 
 /***/ },
 /* 2 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	
+	var _Flower = __webpack_require__(4);
+	
+	var _Flower2 = _interopRequireDefault(_Flower);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	const energyCeiling = 1;
+	
 	class Segment {
 	  constructor(startingEnergy, entropy, totalSegments) {
 	    this.entropy = entropy;
 	    this.totalSegments = totalSegments;
 	    this.currEnergy = startingEnergy;
 	    this.maxEnergy = this.currEnergy;
+	    this.flower = new _Flower2.default(entropy);
+	  }
+	
+	  updateEnergy(newEnergy) {
+	    this.flower.updateEnergy(newEnergy);
 	  }
 	
 	  increase() {
-	    this.currEnergy += this.entropy;
+	    this.currEnergy = Math.min(energyCeiling, this.currEnergy + this.entropy);
 	    this.maxEnergy = Math.max(this.currEnergy, this.maxEnergy);
+	    this.updateEnergy(this.currEnergy);
 	  }
 	
 	  decrease() {
@@ -318,9 +333,117 @@
 	      this.currEnergy = this.entropy;
 	      this.maxEnergy = this.currEnergy;
 	    }
+	
+	    this.updateEnergy(this.currEnergy);
 	  }
 	}
 	exports.default = Segment;
+
+/***/ },
+/* 3 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	const colorSchemes = exports.colorSchemes = [{
+	  "main": "rgb(203,174,210)",
+	  "outer": "rgb(238,233,240)",
+	  "lines": "rgb(149,28,74)",
+	  "center": "rgb(251,235,134)",
+	  "stem": "rgb(127,194,65)"
+	}, {
+	  "main": "rgb(216,127,39)",
+	  "outer": "rgb(244,182,26)",
+	  "lines": "rgb(251,231,82)",
+	  "center": "rgb(253,242,194)",
+	  "stem": "rgb(110,190,68)"
+	}, {
+	  "main": "rgb(152,26,53)",
+	  "outer": "rgb(249,213,223)",
+	  "lines": "rgb(253,243,172)",
+	  "center": "rgb(251,202,38)",
+	  "stem": "rgb(95,186,70)"
+	}, {
+	  "main": "rgb(56,152,211)",
+	  "outer": "rgb(41,53,136)",
+	  "lines": "rgb(253,244,248)",
+	  "center": "rgb(250,237,172)",
+	  "stem": "rgb(60,124,58)"
+	}];
+	
+	const deadColors = exports.deadColors = {
+	  "main": "rgb(10,8,9)",
+	  "outer": "rgb(10,8,9)",
+	  "lines": "rgb(10,8,9)",
+	  "center": "rgb(162,163,163)",
+	  "stem": "rgb(118,117,117)"
+	};
+
+/***/ },
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _colors = __webpack_require__(3);
+	
+	class Flower {
+	  constructor() {
+	    let minEnergy = arguments.length <= 0 || arguments[0] === undefined ? 0 : arguments[0];
+	    let colors = arguments.length <= 1 || arguments[1] === undefined ? _colors.colorSchemes[Math.floor(Math.random() * _colors.colorSchemes.length)] : arguments[1];
+	
+	    this.minEnergy = minEnergy;
+	    this.colors = colors;
+	    this.isHealthy = true;
+	    this.currEnergy = minEnergy;
+	
+	    this.init();
+	  }
+	
+	  pickNewColors() {
+	    this.colors = _colors.colorSchemes[Math.floor(Math.random() * _colors.colorSchemes.length)];
+	  }
+	
+	  die() {
+	    this.pickNewColors();
+	  }
+	
+	  fadeTo(newEnergy) {}
+	
+	  growTo(newEnergy) {}
+	
+	  tweenToEnergy(newEnergy) {
+	    if (newEnergy < this.currEnergy) {
+	      this.isHealthy = false;
+	      this.fadeTo(newEnergy);
+	    } else {
+	      this.isHealthy = true;
+	      this.growTo(newEnergy);
+	    }
+	
+	    this.currEnergy = newEnergy;
+	  }
+	
+	  updateEnergy(newEnergy) {
+	    if (newEnergy <= this.minEnergy && this.currEnergy !== this.minEnergy) {
+	      this.die();
+	    } else {
+	      this.tweenToEnergy(newEnergy);
+	    }
+	  }
+	
+	  init() {
+	    // console.log(this.colors);
+	  }
+	}
+	exports.default = Flower;
 
 /***/ }
 /******/ ]);

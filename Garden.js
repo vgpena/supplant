@@ -1,7 +1,7 @@
 "use strict";
 
-const startingEnergy = 10;
-const entropy = 0.5;
+const startingEnergy = 0;
+const entropy = 0.001;
 const totalSegments = 10;
 const totalEnergy = 500;
 

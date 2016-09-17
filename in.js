@@ -49,7 +49,7 @@ function processSpaces(newFrame) {
       processedFrame.push(Math.floor((videoOutput.width - newFrame) * 10 / videoOutput.width));
     });
 
-    console.log(processedFrame);
+    // console.log(processedFrame);
 
     res(processedFrame);
   });
