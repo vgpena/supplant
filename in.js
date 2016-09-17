@@ -10,6 +10,7 @@ let frames = [];
 let garden = null;
 let mouseSegments = [];
 let socket = null;
+let active = [];
 
 // function addEnergy(spaces) {
 //   return new Promise((res, rej) => {
@@ -90,7 +91,7 @@ function processSpaces(newFrame) {
 
 function foundPeople(data) {
   // console.log(data);
-  const active = [];
+  active = [];
   data.forEach((curr, index) => {
     if (Number(curr) === 1) {
       active.push(index);
@@ -109,6 +110,11 @@ function foundPeople(data) {
   // processSpaces(data).then((filteredSpaces) => {
   //   return garden.addEnergy(filteredSpaces);
   // });
+}
+
+function draw() {
+  garden.addEnergy(active);
+  window.requestAnimationFrame(draw);
 }
 
 function addSocketEvents() {
@@ -160,6 +166,7 @@ window.onload = function() {
   //
   //   window.requestAnimationFrame(getFaceData);
   // }, false);
+  draw();
 }
 
 window.addEventListener('mousedown', (event) => {
