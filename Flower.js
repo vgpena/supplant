@@ -144,6 +144,9 @@ export default class Flower {
     } else {
       this.tweenToEnergy(newEnergy, maxEnergy);
     }
+    if (this.index === 0) {
+      console.log(newEnergy, maxEnergy);
+    }
     this.sprout.attr({
       opacity: newEnergy / maxEnergy
     })

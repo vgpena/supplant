@@ -381,13 +381,13 @@
 	  }
 	
 	  updateEnergy(newEnergy) {
-	    this.flower.updateEnergy(newEnergy);
+	    this.flower.updateEnergy(newEnergy, this.maxEnergy);
 	  }
 	
 	  increase() {
 	    this.currEnergy = Math.min(energyCeiling, this.currEnergy + this.entropy);
 	    this.maxEnergy = Math.max(this.currEnergy, this.maxEnergy);
-	    this.updateEnergy(this.currEnergy);
+	    this.updateEnergy(this.currEnergy, this.maxEnergy);
 	  }
 	
 	  decrease() {
@@ -400,7 +400,7 @@
 	      this.maxEnergy = this.currEnergy;
 	    }
 	
-	    this.updateEnergy(this.currEnergy);
+	    this.updateEnergy(this.currEnergy, this.maxEnergy);
 	  }
 	}
 	exports.default = Segment;
@@ -552,6 +552,9 @@
 	      this.die();
 	    } else {
 	      this.tweenToEnergy(newEnergy, maxEnergy);
+	    }
+	    if (this.index === 0) {
+	      console.log(newEnergy, maxEnergy);
 	    }
 	    this.sprout.attr({
 	      opacity: newEnergy / maxEnergy
