@@ -19,7 +19,8 @@ export default class Garden {
   }
 
   addEnergy(data) {
-    return new Promise((res, rej) => {
+    // console.log(data);
+    // return new Promise((res, rej) => {
       const active = [];
       data.forEach((datum) => {
         active.push(datum);
@@ -33,8 +34,8 @@ export default class Garden {
           }
         });
       }
-      res();
-    });
+    //   res();
+    // });
   }
 
   renderBg() {

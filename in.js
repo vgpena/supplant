@@ -46,9 +46,10 @@ function processSpaces(newFrame) {
 
     let processedFrame = [].concat(mouseSegments);
 
-    newFrame.forEach((face) => {
-      processedFrame.push(Math.floor((videoOutput.width - newFrame) * 10 / videoOutput.width));
-    });
+    // console.log(processedFrame);
+    // newFrame.forEach((face) => {
+    //   processedFrame.push(Math.floor((videoOutput.width - newFrame) * 10 / videoOutput.width));
+    // });
 
     // console.log(processedFrame);
 
@@ -88,9 +89,18 @@ function processSpaces(newFrame) {
 // }
 
 function foundPeople(data) {
-  processSpaces(data).then((filteredSpaces) => {
-    return garden.addEnergy(filteredSpaces);
+  // console.log(data);
+  const active = [];
+  data.forEach((curr, index) => {
+    if (Number(curr) === 1) {
+      active.push(index);
+    }
   });
+
+  garden.addEnergy(active);
+  // processSpaces(data).then((filteredSpaces) => {
+  //   return garden.addEnergy(filteredSpaces);
+  // });
 }
 
 function addSocketEvents() {
