@@ -63,6 +63,7 @@
       .sprout {
         position: absolute;
         bottom: 60px;
+        z-index: 9;
       }
       #green {
         background-image: url('assets/green.svg');
@@ -178,6 +179,7 @@
       .crownClass {
         position: absolute;
         opacity: 0;
+        z-index: 10;
       }
       .crownClass.animate {
         animation: 5s ease 0s crownAnimation;
@@ -203,14 +205,15 @@
       .skullClass {
         position: absolute;
         opacity: 0;
+        z-index: 10;
       }
       .skullClass.animate {
-        animation: 5s ease 0s crownAnimation;
+        animation: 5s ease 0s skullAnimation;
       }
 
       @keyframes skullAnimation {
         0% {
-          transform: translate(0px, 0px);
+          transform: translate(0px, 300px) scale(2);
           opacity: 0;
         }
         20% { 
@@ -220,7 +223,7 @@
           opacity: 1;
         }
         100% {
-          transform: translate(0px, -100px);
+          transform: translate(0px, -100px) scale(2);
           opacity: 0;
         }
       }
