@@ -24,7 +24,7 @@ export default class Segment {
   }
 
   decrease(numSegments = this.totalSegments - 1) {
-    this.currEnergy -= Number(this.entropy / Number(numSegments)) * (this.totalSegments - numSegments);
+    this.currEnergy -= (Number(this.entropy / Number(numSegments)) * (this.totalSegments - numSegments)) * 10;
 
     if (this.currEnergy < this.entropy) {
       this.currEnergy = this.entropy;

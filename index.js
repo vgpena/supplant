@@ -393,7 +393,7 @@
 	  decrease() {
 	    let numSegments = arguments.length <= 0 || arguments[0] === undefined ? this.totalSegments - 1 : arguments[0];
 	
-	    this.currEnergy -= Number(this.entropy / Number(numSegments)) * (this.totalSegments - numSegments);
+	    this.currEnergy -= Number(this.entropy / Number(numSegments)) * (this.totalSegments - numSegments) * 10;
 	
 	    if (this.currEnergy < this.entropy) {
 	      this.currEnergy = this.entropy;
